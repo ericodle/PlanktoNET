@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="https://github.com/ericodle/J_PlanktoNET/blob/main/D20230307T053258_IFCB108_02078.png" alt="Logo" width="400" height="350">
+    <img src="https://github.com/ericodle/J_PlanktoNET/blob/main/D20230307T053258_IFCB108_02078.png" alt="Logo" width="600" height="300">
   </a>
 
 <h3 align="center">J_PlanktoNET: Automated identification of planktonic biodiversity around Okinawa and Hokkaido, Japan</h3>
