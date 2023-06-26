@@ -4,7 +4,8 @@ import csv
 import tkinter as tk
 
 # Path to the folder containing the images
-folder_path = r"D:\Uni\Dino\Projects\IFCB\png\test"
+folder_path = input('Input folder with png images. \n')
+#folder_path = r'D:\Uni\Dino\Projects\IFCB\png\test'
 
 # List all image files in the folder
 image_files = [f for f in os.listdir(folder_path) if f.endswith((".png"))]
@@ -19,9 +20,18 @@ root = tk.Tk()
 root.title("Image Viewer")
 root.geometry("500x500")
 
-# Create labels for image name, width, and height
+# Create labels for image name, number
 image_name_label = tk.Label(root, text="Image Name:")
 image_name_label.pack()
+image_index_label = tk.Label(root, text="")
+image_index_label.pack(anchor=tk.NW)
+
+# Create a list to store previous inputs
+previous_inputs = []
+
+# Create a listbox widget to display previous inputs
+listbox = tk.Listbox(root)
+listbox.pack(side=tk.RIGHT, fill=tk.BOTH)
 
 # Display the images
 current_image_index = 0
@@ -36,6 +46,8 @@ def display_image():
 
         # Update labels with image information
         image_name_label.config(text="Image Name: " + image_file)
+        image_index_label.config(text=f"Image {current_image_index+1} / {len(image_files)}")
+
         # Create entry field for ID input
         id_label = tk.Label(root, text="Enter ID:")
         id_label.pack()
@@ -52,6 +64,9 @@ def display_image():
             image_id = id_entry.get()
             csv_writer.writerow([image_file, image_id])
 
+            # Add the entered ID to the previous inputs list
+            previous_inputs.append(image_id)
+
             # Clear the ID entry field
             id_entry.delete(0, tk.END)
 
@@ -60,6 +75,15 @@ def display_image():
             id_entry.pack_forget()
             image_label.pack_forget()
             save_button.pack_forget()
+
+            # Remove duplicates and sort the previous inputs list
+            previous_inputs_sorted = sorted(set(previous_inputs))
+
+            # Update the listbox with the sorted inputs
+            listbox.delete(0, tk.END)
+            for input_item in previous_inputs_sorted:
+                listbox.insert(tk.END, input_item)
+
             # Proceed to the next image
             current_image_index += 1
             display_image()
@@ -82,6 +106,15 @@ def display_image():
         # Close the CSV file
         csv_file.close()
         root.quit()
+
+    def on_select(event):
+        selected_index = listbox.curselection()
+        if selected_index:
+            selected_value = listbox.get(selected_index)
+            id_entry.delete(0, tk.END)
+            id_entry.insert(tk.END, selected_value)
+
+    listbox.bind('<<ListboxSelect>>', on_select)
 
 # Start displaying the images
 display_image()
