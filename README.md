@@ -9,7 +9,7 @@
 <h3 align="center">J_PlanktoNET: Automated identification of planktonic biodiversity around Okinawa and Hokkaido, Japan</h3>
 
   <p align="center">
-  This repository houses code generated during development of J_PlanktoNET for a broader project exploring the biodiversity of plankton around Japan. The project is a joint effort between X/Y/Z with the Okinawa Institute of Science and Technology and Eric Odle/Dr. Kevin Wakeman with Hokkaido University.
+  This repository houses code generated during development of J_PlanktoNET for a broader project exploring the biodiversity of plankton around Japan. The project is a joint effort between research teams at the Okinawa Institute of Science and Technology and Hokkaido University.
     <br />
     <br />
     <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
