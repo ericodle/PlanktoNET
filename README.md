@@ -77,7 +77,8 @@ bash
     │   └── ...
     ├── ...
 
-    Implement the CustomDataset class in custom_dataset.py to handle the loading and transformation of your images. Customize the __init__, __len__, and __getitem__ methods for your dataset.
+    Implement the CustomDataset class in custom_dataset.py to handle the loading and transformation of your images.
+  
 
 ### Fine-Tuning a Pre-trained Model
 
