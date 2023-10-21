@@ -91,23 +91,6 @@ bash
     Place your unsorted images in a directory.
     Use the classification script to organize unsorted images based on the fine-tuned model's predictions.
 
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions make the open source community great. Everyone has a unique combination of skills and experience. Your input is **highly valued**.
-If you have ideas for improvement, please fork the repo and create a pull request. 
-If this is your first pull request, just follow the steps below:
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
 <!-- LICENSE -->
 ## License
 
