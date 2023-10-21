@@ -64,35 +64,6 @@ Alternatively, you can also clone the repo directly using the following command.
 > The training/testing image dataset containing around 7,000 photos can be obtained (here). These images were acquired during a single collection session using the Imaging FlowCytobot (https://mclanelabs.com/imaging-flowcytobot). 
 > We recommend downloading the images directly into the root project folder.
 
-```sh
-# This script will do something.
-./script.py
-```
-
-### Train a model from scratch
-
-Run the following script to define, instantiate, and train our custom Encoder/Decoder models used alongside pre-trained VGG16.
-   ```sh
-   # Set up a new training run
-   ./train_model.py
-   ```
-   
-Note #1: Training requires a GPU to complete in a timely manner. You can either use your own hardware, or work on a Colab environment.
-If you use a GPU, make sure you have cuda and all related dependencies set up in your environment.
-
-Note #2: Training is as much an art as it is a science, and often involves playing around with different hyperparameters. Users are encouraged to go into the train_model.py script and change the optimizer, learning rate, epochs, or other parameters. The default settings represent what worked best for us at the time of experimentation.
-
-### Testing a trained model
-
-You now have a model trained from scratch on MFCCs extracted from the GTZAN music genre dataset. Nice! It is time to see how well it can classify musical genre.
-In our conference paper, we used a shuffled 80:10:10 split for training, train phase validation, and testing. Therefore, the music clip segments reserved for testing come from same dataset, but have never been seen by the trained model before. Given the scope of the GTZAN dataset, your trained model is unlikely to distinguish Bunun polyphonic chant music from Ainu rimse dance music. A neural network is only as good as the data on which it is trained. Within the GTZAN training data, how well can your model classify musical genre?
-
-  ```sh
-  # Test a pre-trained model.
-  ./test_model.py
-  ```
-
-
 
 
 <!-- CONTRIBUTING -->
