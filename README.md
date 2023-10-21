@@ -37,27 +37,6 @@ collected which we will use for training and testing.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Getting Started
-
-Download this repository by going up to the green "Code" button at the top right and clicking "Download ZIP".
-
-Alternatively, you can also clone the repo directly using the following command.
-
-  ```sh
-  # Replace "your_folderpath_here" with the actual folder where you want the project to go.
-  cd /your_folderpath_here
-  git clone git@github.com:ericodle/J_PlanktoNET.git
-  ```
-
-> __For this example, the working directory is the repository root directory.__ 
-
-### Install dependencies using pip
-
-  ```sh
-  # Install dependencies if necessary. 
-  # You may want to work in a virtual environment. Conda environments are nice for that.
-  pip install torch torchvision
-  ```
 
 ### Download test dataset
 
