@@ -49,11 +49,11 @@ collected which we will use for training and testing.
 Before using PlanktoNET, ensure you have the following prerequisites:
 
     Python 3.6 or later
-    PyTorch (for deep learning)
+    PyTorch (for neural network)
     torchvision
     PIL (Python Imaging Library)
     NumPy
-    scikit-learn (for PCA and K-means clustering, if used)
+    scikit-learn (for PCA and K-means clustering)
 
 ## Install the required dependencies:
 
