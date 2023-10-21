@@ -55,15 +55,7 @@ Before using PlanktoNET, ensure you have the following prerequisites:
     NumPy
     scikit-learn (for PCA and K-means clustering, if used)
 
-### Installation
-
-    Clone this repository to your local machine:
-
-    bash
-
-git clone https://github.com/your-username/PlanktoNET.git
-
-### Install the required dependencies:
+## Install the required dependencies:
 
 bash
 
