@@ -43,7 +43,60 @@ collected which we will use for training and testing.
 > The training/testing image dataset containing around 7,000 photos can be obtained (here). These images were acquired during a single collection session using the Imaging FlowCytobot (https://mclanelabs.com/imaging-flowcytobot). 
 > We recommend downloading the images directly into the root project folder.
 
+## Getting Started
+### Prerequisites
 
+Before using PlanktoNET, ensure you have the following prerequisites:
+
+    Python 3.6 or later
+    PyTorch (for deep learning)
+    torchvision
+    PIL (Python Imaging Library)
+    NumPy
+    scikit-learn (for PCA and K-means clustering, if used)
+
+### Installation
+
+    Clone this repository to your local machine:
+
+    bash
+
+git clone https://github.com/your-username/PlanktoNET.git
+
+### Install the required dependencies:
+
+bash
+
+    pip install torch torchvision Pillow numpy scikit-learn
+
+## Usage
+### Dataset Preparation
+
+    Create a directory structure for your dataset where each subdirectory corresponds to a different class. For example:
+
+    dataset/
+    ├── Class1/
+    │   ├── image1.jpg
+    │   ├── image2.jpg
+    │   └── ...
+    ├── Class2/
+    │   ├── image1.jpg
+    │   ├── image2.jpg
+    │   └── ...
+    ├── ...
+
+    Implement the CustomDataset class in custom_dataset.py to handle the loading and transformation of your images. Customize the __init__, __len__, and __getitem__ methods for your dataset.
+
+### Fine-Tuning a Pre-trained Model
+
+    Fine-tune a pre-trained model (e.g., VGG, ResNet) using one of the provided fine-tuning scripts in the repository.
+    Specify the path to your dataset and the number of classes.
+    Train the model for a specified number of epochs.
+
+### Classifying Unsorted Images
+
+    Place your unsorted images in a directory.
+    Use the classification script to organize unsorted images based on the fine-tuned model's predictions.
 
 <!-- CONTRIBUTING -->
 ## Contributing
