@@ -37,6 +37,98 @@ collected which we will use for training and testing.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
+## Prerequisite
+
+Install [Python3](https://www.python.org/downloads/) on your computer.
+
+Enter this into your computer's command line interface (terminal, control panel, etc.) to check the version:
+
+  ```sh
+  python --version
+  ```
+
+If the first number is not a 3, update to Python3.
+
+## Setup
+
+Here is an easy way to use our GitHub repository.
+
+### Step 1: Clone the repository
+
+
+Open the command line interface and run:
+  ```sh
+  git clone git@github.com:ericodle/PlanktoNET.git
+  ```
+
+You have now downloaded the entire project, including all its sub-directories (folders) and files.
+(We will avoid using Git commands.)
+
+### Step 2: Navigate to the project directory
+Find where your computer saved the project, then enter:
+
+  ```sh
+  cd /path/to/project/directory
+  ```
+
+If performed correctly, your command line interface should resemble
+
+```
+user@user:~/PlanktoNET$
+```
+
+### Step 3: Create a virtual environment: 
+Use a **virtual environment** so library versions on your computer match the versions used during development and testing.
+
+
+```sh
+python3 -m venv planktonet-env
+```
+
+A virtual environment named "planktonet-env" has been created. 
+Enter the environment to do our work by using the following command:
+
+```sh
+source planktonet-env/bin/activate
+```
+
+When performed correctly, your command line interface prompt should look like 
+
+```
+(planktonet-env) user@user:~/PlanktoNET$
+```
+
+### Step 3: Install requirements.txt
+
+Avoid "dependency hell" by installing specific software versions known to work well together.
+
+  ```sh
+pip install -r requirements.txt
+  ```
+
+### Step 4: Use the project
+
+The core of this project is contained in the **src** directory. 
+
+For example, if you want to pre-process your own data using the image_preprocessing.py script, enter:
+
+
+```sh
+python3 src/image_preprocessing.py
+```
+
+
+### Step 5: Deactivate the virtual environment
+
+When finished working, it is best to deactivate the virtual environment and change directory (cd) out of the project directory. Enter the following command:
+
+  ```sh
+deactivate
+cd ~
+  ```
+
+...or you can just close the command line interface window.
+
 
 ### Download test dataset
 
