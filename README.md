@@ -82,7 +82,7 @@ Use a **virtual environment** so library versions on your computer match the ver
 
 
 ```sh
-python3 -m venv planktonet-env
+python3 -m venv planktonet-env --python=python3.6
 ```
 
 A virtual environment named "planktonet-env" has been created. 
