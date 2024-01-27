@@ -6,7 +6,7 @@
     <img src="https://github.com/ericodle/PlanktoNET/blob/main/D20230307T053258_IFCB108_02078.png" alt="Logo" width="600" height="300">
   </a>
 
-<h3 align="center">PlanktoNET: Automated identification of planktonic biodiversity around Okinawa and Hokkaido, Japan</h3>
+<h3 align="center">PlanktoNET: Automated identification of planktonic biodiversity *Research Ongoing* </h3>
 
   <p align="center">
   This repository houses code generated during development of PlanktoNET, which is intended for a broader project exploring the biodiversity of plankton around Japan. This project is a joint effort between research teams at the Okinawa Institute of Science and Technology and Hokkaido University.
