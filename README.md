@@ -130,14 +130,16 @@ cd ~
 ...or you can just close the command line interface window.
 
 
-### Publicly Available Datasets
+### Step 6: Access publicly available datasets
 
-> The McLane Labs image dataset contains around 7,000 photos obtained using the Imaging FlowCytobot (https://mclanelabs.com/imaging-flowcytobot). 
-> The EcoTaxa
+ We used the following public image datasets for model training and validation. Feel free to download them as needed.
+
+> McLane Labs set: around 7,000 photos obtained using the Imaging FlowCytobot (https://mclanelabs.com/imaging-flowcytobot). 
+> EcoTaxa set: projects 9621 (https://ecotaxa.obs-vlfr.fr/prj/9621) and 9942 (https://ecotaxa.obs-vlfr.fr/prj/9942) containing approx. xyz manually labeled photos.
 
 
 
-## Usage
+## src scripts
 
   
 
