@@ -1,0 +1,4 @@
+Training Accuracy: 1.00
+Test Accuracy: 0.57
+
+note:over-fit
