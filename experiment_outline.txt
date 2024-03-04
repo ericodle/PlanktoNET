@@ -1,0 +1,15 @@
+experiment 1
+try machine learning approaches to reproduce the mclanelabs taxonomy 
+svm
+t-sne/kmeans
+vgg16
+resnet50
+
+
+experiment 2
+repeat but with phua data
+
+
+experiment 3
+explore hierarchical clustering accuracy
+
