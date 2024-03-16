@@ -88,6 +88,7 @@ python3 -m venv -p python3.8 planktonet-env
 A virtual environment named "planktonet-env" has been created. 
 Enter the environment to do our work by using the following command:
 
+
 ```sh
 source planktonet-env/bin/activate
 ```
@@ -110,49 +111,22 @@ pip install -r requirements.txt
 
 The core of this project is contained in the **src** directory. 
 
-For example, if you want to pre-process your own data using the image_preprocessing.py script, enter:
-
+#### Train a new model ####
+The training scripts require 4 arguments: 1) train/test image directory path, 2) output directory, 3) initial learning rate 4) number of images per class.
+For example, if you want to train your own Vision Transformer model, run:
 
 ```sh
-python3 src/image_preprocessing.py
+python3 src/experiment_1/train_vision_transformer.py mclanelabs/mclanelabs_set experiment_1/transformer 0.0001 300
 ```
 
 
-### Step 5: Deactivate the virtual environment
-
-When finished working, it is best to deactivate the virtual environment and change directory (cd) out of the project directory. Enter the following command:
-
-  ```sh
-deactivate
-cd ~
-  ```
-
-...or you can just close the command line interface window.
-
-
-### Step 6: Access publicly available datasets
+### Step 5: Access publicly available datasets
 
  We used the following public image datasets for model training and validation. Feel free to download them as needed.
 
 > McLane Labs set: around 7,000 photos obtained using the Imaging FlowCytobot (https://mclanelabs.com/imaging-flowcytobot). 
 > EcoTaxa set: projects 9621 (https://ecotaxa.obs-vlfr.fr/prj/9621) and 9942 (https://ecotaxa.obs-vlfr.fr/prj/9942) containing approx. xyz manually labeled photos.
 
-
-
-## src scripts
-
-  
-
-### Fine-Tuning a Pre-trained Model
-
-    Fine-tune a pre-trained model (e.g., VGG, ResNet) using one of the provided fine-tuning scripts in the repository.
-    Specify the path to your dataset and the number of classes.
-    Train the model for a specified number of epochs.
-
-### Classifying Unsorted Images
-
-    Place your unsorted images in a directory.
-    Use the classification script to organize unsorted images based on the fine-tuned model's predictions.
 
 <!-- LICENSE -->
 ## License
