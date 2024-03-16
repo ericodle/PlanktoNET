@@ -109,7 +109,7 @@ def main(data_dir, output_dir, learning_rate, num_imgs):
     optimizer = torch.optim.Adam(vit_model.parameters(), lr=learning_rate) 
 
     # Define the learning rate scheduler
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.1)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=0.01)
 
     # Log file
     log_file_path = os.path.join(output_dir, 'training_log.txt')
@@ -191,16 +191,16 @@ def main(data_dir, output_dir, learning_rate, num_imgs):
                 epochs_since_improvement += 1
 
             if epochs_since_improvement >= 2:
+                # Save trained model
+                model_save_path = os.path.join(output_dir, 'vit_model.pth')
+                torch.save(vit_model.state_dict(), model_save_path)
+                print(f"Trained model saved at: {model_save_path}")  
+
                 print("Early stopping triggered. Test accuracy did not improve within patience epochs.")
                 stop_training = True
                 break
 
-            if stop_training:
-                # Save trained model
-                model_save_path = os.path.join(output_dir, 'vit_model.pth')
-                torch.save(vit_model.state_dict(), model_save_path)
-                print(f"Trained model saved at: {model_save_path}")        
-                # Stop trained        
+            if stop_training:       
                 break
 
         # Plotting
@@ -224,4 +224,3 @@ if __name__ == "__main__":
     learning_rate = float(sys.argv[3])
     num_imgs = int(sys.argv[4])
     main(data_dir, output_dir, learning_rate, num_imgs)
-
