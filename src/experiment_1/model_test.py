@@ -3,19 +3,49 @@ import sys
 import torch
 import numpy as np
 from PIL import Image
-from sklearn.metrics import confusion_matrix, accuracy_score, f1_score, precision_score, recall_score
+from sklearn.metrics import accuracy_score
 import torchvision.transforms as transforms
 from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
 import timm
 import matplotlib.pyplot as plt
 
-def main(data_dir, output_dir, model_path):
+def evaluate_sorting_performance(model, test_loader, device):
+    predicted_labels = []
+    actual_labels = []
+
+    # Predict labels for test images
+    for inputs, labels in test_loader:
+        inputs = inputs.to(device)
+        labels = labels.to(device)
+        outputs = model(inputs)
+        _, predicted = torch.max(outputs, 1)
+        predicted_labels.extend(predicted.cpu().tolist())
+        actual_labels.extend(labels.cpu().tolist())
+
+    # Sort images based on predicted labels
+    sorted_indices = sorted(range(len(predicted_labels)), key=lambda i: predicted_labels[i])
+    sorted_images = [test_loader.dataset.samples[i][0] for i in sorted_indices]
+    sorted_actual_labels = [actual_labels[i] for i in sorted_indices]
+
+    # Evaluate sorting performance (accuracy)
+    accuracy = accuracy_score(actual_labels, predicted_labels)
+
+    return sorted_images, sorted_actual_labels, accuracy
+
+def save_sorted_images(images, labels, output_dir, input_dataset):
+    os.makedirs(output_dir, exist_ok=True)
+    for i, image_path in enumerate(images):
+        img = Image.open(image_path)
+        label = input_dataset.classes[labels[i]]
+        label_dir = os.path.join(output_dir, label)
+        os.makedirs(label_dir, exist_ok=True)
+        img_name = f"sorted_image_{i}.png"
+        img.save(os.path.join(label_dir, img_name))
+
+def main(data_dir, model_path, output_dir):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f'Using device: {device}')
-
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
 
     transform = transforms.Compose([
         transforms.Resize((256, 256)),
@@ -24,69 +54,25 @@ def main(data_dir, output_dir, model_path):
     ])
 
     dataset = ImageFolder(root=data_dir, transform=transform)
-    class_names = dataset.classes
+    test_loader = DataLoader(dataset, batch_size=16, shuffle=False)
 
-    print(f"Number of classes found in the dataset: {len(class_names)}")
-    print("Classes found in the dataset:")
-    for cls in class_names:
-        print(cls)
+    model = timm.create_model('vit_base_patch16_224', pretrained=True, num_classes=len(dataset.classes))
+    model.load_state_dict(torch.load(model_path))
+    model.to(device)
+    model.eval()
 
-    test_set = dataset
+    sorted_images, sorted_actual_labels, accuracy = evaluate_sorting_performance(model, test_loader, device)
 
-    test_loader = DataLoader(test_set, batch_size=32, shuffle=False)
-    
-    vit_model = timm.create_model('vit_base_patch16_224', pretrained=True, num_classes=len(class_names))
-    vit_model.load_state_dict(torch.load(model_path))
-    print("Trained model parameters loaded.")
-    vit_model.to(device)
-    vit_model.eval()
+    print(f"Accuracy of sorting: {accuracy}")
 
-    predictions = []
-    ground_truths = []
-    with torch.no_grad():
-        for inputs, labels in test_loader:
-            inputs = inputs.to(device)
-            print("Outputs being predicted from inputs.")
-            outputs = vit_model(inputs)
-            _, predicted = torch.max(outputs, 1)
-            print("t1.")
-            predictions.extend(predicted.cpu().numpy())
-            print("t2.")
-            ground_truths.extend(labels.numpy())
-            print("t3.")
-
-    predictions = np.array(predictions)
-    print("t4.")
-    ground_truths = np.array(ground_truths)
-    print("t5.")
-    confusion = confusion_matrix(ground_truths, predictions)
-    print("t6.")
-    accuracy = accuracy_score(ground_truths, predictions)
-    precision = precision_score(ground_truths, predictions, average='weighted')
-    recall = recall_score(ground_truths, predictions, average='weighted')
-    f1 = f1_score(ground_truths, predictions, average='weighted')
-
-    print(f'Accuracy: {accuracy:.4f}')
-    print(f'Precision: {precision:.4f}')
-    print(f'Recall: {recall:.4f}')
-    print(f'F1 Score: {f1:.4f}')
-
-    plt.figure(figsize=(10, 8))
-    plt.imshow(confusion, interpolation='nearest', cmap=plt.cm.Blues)
-    plt.colorbar()
-    tick_marks = np.arange(len(class_names))
-    plt.xticks(tick_marks, class_names, rotation=45)
-    plt.yticks(tick_marks, class_names)
-    plt.xlabel('Predicted Label')
-    plt.ylabel('True Label')
-    plt.title('Confusion Matrix')
-    plt.show()
+    # Save sorted images to the output directory
+    save_sorted_images(sorted_images, sorted_actual_labels, output_dir, dataset)
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
-        print("Usage: python script.py <test image directory> <output directory> <path to pre-trained model>")
+        print("Usage: python script.py <test image directory> <path to pre-trained model> <output directory>")
         sys.exit(1)
     data_dir = sys.argv[1]
-    output_dir = sys.argv[2]
-    model_path = sys.argv[3]
-    main(data_dir, output_dir, model_path)
+    model_path = sys.argv[2]
+    output_dir = sys.argv[3]
+    main(data_dir, model_path, output_dir)
