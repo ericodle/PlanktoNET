@@ -116,7 +116,7 @@ The training scripts require 4 arguments: 1) train/test image directory path, 2)
 For example, if you want to train your own Vision Transformer model, run:
 
 ```sh
-python3 src/experiment_1/train_vision_transformer.py mclanelabs/mclanelabs_set experiment_1/transformer 0.0001 300
+python3 ./src/experiment_1/train_vision_transformer.py ./mclanelabs/mclanelabs_set ./experiment_1/transformer 0.0001 300
 ```
 
 
