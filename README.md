@@ -27,6 +27,8 @@ We should have the supervised training done and the users will be able to have t
 Then this model can be finetuned and added to when people have their own datasets and location's added to the db. 
 This was the goal all along.
 
+<img src="https://github.com/ericodle/PlanktoNET/blob/main/img/workflow.png" alt="Logo" width="600" height="300">
+
 Breakdown of aim:
 1* We should have a model for prediction of images. This will serve as a base line, using data from Mclane + our dataset
 2* Test model with various imaging tech (IFCB and Planktoscope)
