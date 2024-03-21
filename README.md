@@ -28,10 +28,9 @@
   </p>
 
   <p align="center">
-  <img src="https://github.com/ericodle/PlanktoNET/blob/main/img/workflow.png" alt="Logo" width="600" height="300">
+  <img src="https://github.com/ericodle/PlanktoNET/blob/main/img/workflow.png" alt="Logo" width="700" height="500">
     <br />
   </p>
-  <img src="https://github.com/ericodle/PlanktoNET/blob/main/img/workflow.png" alt="Logo" width="600" height="300">
   
   Experiment Breakdown:
   
