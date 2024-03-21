@@ -22,17 +22,17 @@
 <!-- ABOUT THE PROJECT -->
 ## About this Project
  <p align="center">
+   
 The primary objective of this project is to develop an integrated "default" sorting mechanism. 
 Upon completion of supervised training, users will have the capability to sort their images without the necessity of manual intervention. 
 Subsequently, the model can be further refined and expanded to accommodate individual datasets and additional locations within the database. 
 This has consistently been the overarching objective of the project.
-
-
-
+ </p>
+ 
 <img src="https://github.com/ericodle/PlanktoNET/blob/main/img/workflow.png" alt="Logo" width="600" height="300">
 
 Objective Breakdown:
-
+ <p align="center">
    1. Develop a predictive image model to establish a foundational framework, utilizing data from Mclane in conjunction with our dataset.
    2. Evaluate the model's performance across diverse imaging technologies, including IFCB and Planktoscope.
    3. Implement a finetuning feature to allow users to incorporate additional data into the database selectively, acknowledging the variability in user requirements.
