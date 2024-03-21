@@ -32,7 +32,7 @@
   
   Objective Breakdown:
   
-  1. Develop a predictive image model to establish a foundational framework, utilizing data from Mclane in conjunction with our dataset.
+  1. Develop a predictive image model to establish a foundational framework, utilizing data from McLane Labs in conjunction with our dataset.
   2. Evaluate the model's performance across diverse imaging technologies, including IFCB and Planktoscope.
   3. Implement a finetuning feature to allow users to incorporate additional data into the database selectively, acknowledging the variability in user requirements
  </p>
