@@ -22,18 +22,15 @@
 <!-- ABOUT THE PROJECT -->
 ## About this Project
 
-Automated data collection is enabled using an imaging flow cytobot (FCB) which
-generates large datasets that can be used for monitoring marine biodiversity.
-However, the bottleneck for analysis is often that species identification requires
-specific expertise and is extremely time consuming.
-Currently, the available software packages do not have their training dataset and
-code available which restricts the flexibility for application by groups or locations.
-Here we propose to develop an open-source software package designed for batch
-identification of plankton using a classifier to process data collected from an FCB.
-Samples will be collected from ecologically different locations, Okinawa and
-Hokkaido; 3 sites in Okinawa (Sesoko island, Ikei Island, and Seragaki) and 2 sites in
-Hokkaido (Otaru, Akkeshi). A training dataset will be generated from samples
-collected which we will use for training and testing.
+A "default" sorter which is inbuilt is the goal of this project. 
+We should have the supervised training done and the users will be able to have their images sorted without needing manual sorting first. 
+Then this model can be finetuned and added to when people have their own datasets and location's added to the db. 
+This was the goal all along.
+
+Breakdown of aim:
+1* We should have a model for prediction of images. This will serve as a base line, using data from Mclane + our dataset
+2* Test model with various imaging tech (IFCB and Planktoscope)
+3* Have a finetune option for other users to add into the db, not everyone will need
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
