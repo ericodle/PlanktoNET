@@ -35,7 +35,7 @@ Objective Breakdown:
    2. Evaluate the model's performance across diverse imaging technologies, including IFCB and Planktoscope.
    3. Implement a finetuning feature to allow users to incorporate additional data into the database selectively, acknowledging the variability in user requirements.
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+<p align="center">(<a href="#top">back to top</a>)</p>
 
 ## Prerequisite
 
