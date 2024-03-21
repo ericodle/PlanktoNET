@@ -22,17 +22,18 @@
 <!-- ABOUT THE PROJECT -->
 ## About this Project
 
-A "default" sorter which is inbuilt is the goal of this project. 
-We should have the supervised training done and the users will be able to have their images sorted without needing manual sorting first. 
-Then this model can be finetuned and added to when people have their own datasets and location's added to the db. 
-This was the goal all along.
+The primary objective of this project is to develop an integrated "default" sorting mechanism. 
+Upon completion of supervised training, users will have the capability to sort their images without the necessity of manual intervention. 
+Subsequently, the model can be further refined and expanded to accommodate individual datasets and additional locations within the database. 
+This has consistently been the overarching objective of the project.
 
 <img src="https://github.com/ericodle/PlanktoNET/blob/main/img/workflow.png" alt="Logo" width="600" height="300">
 
-Breakdown of aim:
-1* We should have a model for prediction of images. This will serve as a base line, using data from Mclane + our dataset
-2* Test model with various imaging tech (IFCB and Planktoscope)
-3* Have a finetune option for other users to add into the db, not everyone will need
+Objective Breakdown:
+
+   1. Develop a predictive image model to establish a foundational framework, utilizing data from Mclane in conjunction with our dataset.
+   2. Evaluate the model's performance across diverse imaging technologies, including IFCB and Planktoscope.
+   3. Implement a finetuning feature to allow users to incorporate additional data into the database selectively, acknowledging the variability in user requirements.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
