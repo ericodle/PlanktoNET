@@ -108,11 +108,13 @@ Avoid "dependency hell" by installing specific software versions known to work w
 pip install -r requirements.txt
   ```
 
-### Step 4: Use the project
+### Step 4: How to use PlanktoNET
 
-The core of this project is contained in the **src** directory. 
+PlanktoNET appeals to the broader plankton research community by offering a modular set of utilities.
 
-#### Train a new model ####
+Specificaly, users can...
+
+#### Sort images using a new model ####
 The training scripts require 4 arguments: 1) train/test image directory path, 2) output directory, 3) initial learning rate 4) number of images per class.
 For example, if you want to train your own Vision Transformer model, run:
 
@@ -120,13 +122,11 @@ For example, if you want to train your own Vision Transformer model, run:
 python3 ./src/experiment_1/train_vision_transformer.py ./mclanelabs/mclanelabs_set ./experiment_1/transformer 0.0001 300
 ```
 
+#### Sort images using an existing model ####
 
-### Step 5: Access publicly available datasets
+#### Fine-tune an existing model on new data ####
 
- We used the following public image datasets for model training and validation. Feel free to download them as needed.
-
-> McLane Labs set: around 7,000 photos obtained using the Imaging FlowCytobot (https://mclanelabs.com/imaging-flowcytobot). 
-> EcoTaxa set: projects 9621 (https://ecotaxa.obs-vlfr.fr/prj/9621) and 9942 (https://ecotaxa.obs-vlfr.fr/prj/9942) containing approx. xyz manually labeled photos.
+#### Evaluate a model on curated ground truth data ####
 
 
 <!-- LICENSE -->
