@@ -110,27 +110,29 @@ pip install -r requirements.txt
 
 ### Step 4: Running PlanktoNET
 
-PlanktoNET appeals to the broader plankton research community by offering a modular set of utilities.
+PlanktoNet is an application designed for sorting plankton images efficiently using advanced neural network models. With an intuitive user interface, PlanktoNet offers various features to streamline the process of sorting plankton images, providing users with the flexibility to use pre-trained models, fine-tune existing models, and evaluate model performance.
 
 Start by entering your configured environment (see above steps) and running: 
 
 ```sh
 python3 ./run_planktonet.py
 ```
-A graphical user environment (GUI) will open, and upon clicking "Begin", users will be presented with the following utility menu.
 
 #### Sort with New Model ####
 
-```sh
-python3 ./src/experiment_1/train_vision_transformer.py ./mclanelabs/mclanelabs_set ./experiment_1/transformer 0.0001 300
-```
+This utility allows users to perform plankton image sorting using state-of-the-art neural network models. Users have the option to choose between Convolutional Neural Networks (CNNs) and Transformer Neural Networks. By selecting this option, users can specify input images, choose an appropriate model, and designate an output directory for the sorted images. This functionality is ideal for users who want to classify plankton images using newly trained models.
 
 #### Sort wit Existing Model ####
 
+This utility enables users to utilize previously trained models for sorting plankton images. Users can select an existing model file and provide input images to initiate the sorting process. This feature is beneficial for users who have already trained models on specific datasets and wish to apply them to new plankton image sorting tasks.
+
 #### Fine-Tune a Model ####
+
+This utility allows users to refine the performance of pre-trained neural network models using their own dataset. Users can select a base model, specify training data, adjust hyperparameters such as learning rate and the number of images per class, and designate an output directory for the fine-tuned model. This feature is useful for users who want to adapt pre-trained models to better suit their specific plankton image sorting requirements.
 
 #### Evaluate Model ####
 
+This utility provides users with the capability to assess the performance of trained neural network models for plankton image sorting tasks. While this functionality is currently under development in the application, it will offer users valuable insights into the accuracy and effectiveness of their trained models, aiding in further refinement and optimization of sorting processes.
 
 <!-- LICENSE -->
 ## License
