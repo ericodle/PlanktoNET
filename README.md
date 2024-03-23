@@ -108,25 +108,28 @@ Avoid "dependency hell" by installing specific software versions known to work w
 pip install -r requirements.txt
   ```
 
-### Step 4: How to use PlanktoNET
+### Step 4: Running PlanktoNET
 
 PlanktoNET appeals to the broader plankton research community by offering a modular set of utilities.
 
-Specificaly, users can...
+Start by entering your configured environment (see above steps) and running: 
 
-#### Sort images using a new model ####
-The training scripts require 4 arguments: 1) train/test image directory path, 2) output directory, 3) initial learning rate 4) number of images per class.
-For example, if you want to train your own Vision Transformer model, run:
+```sh
+python3 ./run_planktonet.py
+```
+A graphical user environment (GUI) will open, and upon clicking "Begin", users will be presented with the following utility menu.
+
+#### Sort with New Model ####
 
 ```sh
 python3 ./src/experiment_1/train_vision_transformer.py ./mclanelabs/mclanelabs_set ./experiment_1/transformer 0.0001 300
 ```
 
-#### Sort images using an existing model ####
+#### Sort wit Existing Model ####
 
-#### Fine-tune an existing model on new data ####
+#### Fine-Tune a Model ####
 
-#### Evaluate a model on curated ground truth data ####
+#### Evaluate Model ####
 
 
 <!-- LICENSE -->
