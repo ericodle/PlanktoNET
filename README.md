@@ -28,7 +28,7 @@
   </p>
 
   <p align="center">
-  <img src="https://github.com/ericodle/PlanktoNET/blob/main/img/workflow.png" alt="Logo" width="700" height="500">
+  <img src="https://github.com/ericodle/PlanktoNET/blob/main/img/planktonet_fig.pdf" alt="Logo" width="700" height="500">
     <br />
   </p>
   
