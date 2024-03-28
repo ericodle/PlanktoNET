@@ -314,11 +314,85 @@ class EvaluationWindow(QMainWindow):
     def initUI(self):
         layout = QVBoxLayout()
         
-        # Add evaluation functionality here
-        
-        self.central_widget = QWidget()
-        self.central_widget.setLayout(layout)
-        self.setCentralWidget(self.central_widget)
+        # Create a scroll area for the central widget
+        scroll_area = QScrollArea()
+        widget = QWidget()
+        widget.setLayout(layout)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setWidget(widget)
+        self.setCentralWidget(scroll_area)
+
+        self.evaluation_label = QLabel("<h2>Evaluation</h2>"
+                                       "<p>Choose the model type you want to evaluate:</p>")
+        layout.addWidget(self.evaluation_label)
+
+        # Button to choose model type
+        self.chooseModelTypeButton = QPushButton("Choose Model Type")
+        self.chooseModelTypeButton.clicked.connect(self.chooseModelType)
+        layout.addWidget(self.chooseModelTypeButton)
+
+        # Buttons for starting evaluation
+        self.evaluateButton = QPushButton("Evaluate")
+        self.evaluateButton.clicked.connect(self.startEvaluation)
+        layout.addWidget(self.evaluateButton)
+
+        # Button to go back to MainWindow
+        self.backButton = QPushButton("Close")
+        self.backButton.clicked.connect(self.goBackToMain)
+        layout.addWidget(self.backButton)
+
+        self.setFixedWidth(800)
+
+        # Attributes to store user selections
+        self.model_type = None
+
+    def chooseModelType(self):
+        items = ("Convolutional", "Transformer")
+        item, ok = QInputDialog.getItem(self, "Choose Model Type", "Select model type:", items, 0, False)
+        if ok and item:
+            self.model_type = item.lower()
+            QMessageBox.information(self, "Model Type Selected", f"Model type selected: {item}")
+
+    def startEvaluation(self):
+        try:
+            # Check if model type is selected
+            if not self.model_type:
+                QMessageBox.warning(self, "Model Type Not Selected", "Please choose a model type.")
+                return
+
+            # Prompt user to select data directory
+            data_dir = QFileDialog.getExistingDirectory(self, "Select Data Directory")
+            if not data_dir:
+                QMessageBox.warning(self, "Data Directory Not Selected", "Please select the data directory.")
+                return
+
+            # Prompt user to select model file
+            model_path, _ = QFileDialog.getOpenFileName(self, "Select Model File", filter="Model files (*.pth)")
+            if not model_path:
+                QMessageBox.warning(self, "Model File Not Selected", "Please select the model file.")
+                return
+
+            # Prompt user to select output directory
+            output_dir = QFileDialog.getExistingDirectory(self, "Select Output Directory")
+            if not output_dir:
+                QMessageBox.warning(self, "Output Directory Not Selected", "Please select the output directory.")
+                return
+
+            if self.model_type == "convolutional":
+                # Call cnn_eval.main() with selected arguments
+                cnn_eval.main(data_dir, model_path, output_dir)
+                QMessageBox.information(self, "Evaluation Completed", "Convolutional model evaluation completed.")
+            elif self.model_type == "transformer":
+                # Call transformer_eval.main() with selected arguments
+                transformer_eval.main(data_dir, model_path, output_dir)
+                QMessageBox.information(self, "Evaluation Completed", "Transformer model evaluation completed.")
+
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
+
+    def goBackToMain(self):
+        self.close()  # Close the EvaluationWindow
+
 
 ################################################################################################################################
 ################################################################################################################################
