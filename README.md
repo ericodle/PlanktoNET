@@ -59,7 +59,7 @@ Here is an easy way to use our GitHub repository.
 
 Open the command line interface and run:
   ```sh
-  git clone git@github.com:ericodle/PlanktoNET.git
+  git clone https://github.com/ericodle/PlanktoNET.git
   ```
 
 You have now downloaded the entire project, including all its sub-directories (folders) and files.
