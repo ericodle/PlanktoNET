@@ -6,66 +6,79 @@ from PIL import Image
 import torchvision
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import torchvision.transforms as transforms
-from torchvision.datasets import ImageFolder
 from torch.utils.data import DataLoader
-from torchvision import datasets, transforms
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-def evaluate_sorting_performance(model, test_loader, device):
+class CustomImageFolder(torch.utils.data.Dataset):
+    def __init__(self, root, transform=None):
+        self.root = root
+        self.transform = transform
+        self.samples = []
+        self.class_to_idx = {}
+        self.idx_to_class = {}
+
+        # Get class directories and assign numerical labels
+        for idx, subdir in enumerate(os.listdir(root)):
+            subdir_path = os.path.join(root, subdir)
+            if os.path.isdir(subdir_path):
+                self.class_to_idx[subdir] = idx
+                self.idx_to_class[idx] = subdir
+                for filename in os.listdir(subdir_path):
+                    filepath = os.path.join(subdir_path, filename)
+                    # Attempt to open the image, skip if it fails
+                    try:
+                        Image.open(filepath).verify()
+                        self.samples.append((filepath, subdir))
+                    except (IOError, SyntaxError) as e:
+                        print(f"Skipping {filepath}: {e}")
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, index):
+        path, target = self.samples[index]
+        sample = Image.open(path).convert('RGB')
+
+        if self.transform is not None:
+            sample = self.transform(sample)
+
+        # Convert target (class label) to numerical format
+        target = self.class_to_idx[target]
+
+        return sample, target
+
+def evaluate_sorting_performance(model, test_loader, device, class_names):
     predicted_labels = []
     actual_labels = []
 
-    # Predict labels for test images
-    for inputs, labels in test_loader:
-        inputs = inputs.to(device)
-        labels = labels.to(device)
-        outputs = model(inputs)
-        _, predicted = torch.max(outputs, 1)
-        predicted_labels.extend(predicted.cpu().tolist())
-        actual_labels.extend(labels.cpu().tolist())
+    model.eval()
+    with torch.no_grad():
+        for inputs, labels in test_loader:
+            inputs = inputs.to(device)
+            labels = labels.to(device)
+            outputs = model(inputs)
+            _, predicted = torch.max(outputs, 1)
+            predicted_labels.extend([class_names[idx] for idx in predicted.cpu().tolist()])
+            actual_labels.extend([test_loader.dataset.idx_to_class[label.item()] for label in labels.cpu()])
 
-    # Evaluate sorting performance (accuracy)
-    accuracy = accuracy_score(actual_labels, predicted_labels)
-    precision = precision_score(actual_labels, predicted_labels, average='macro')
-    recall = recall_score(actual_labels, predicted_labels, average='macro')
-    f1 = f1_score(actual_labels, predicted_labels, average='macro')
+    return actual_labels, predicted_labels
 
-    # Sort images based on predicted labels
-    sorted_indices = sorted(range(len(predicted_labels)), key=lambda i: predicted_labels[i])
-    sorted_images = [test_loader.dataset.samples[i][0] for i in sorted_indices]
-    sorted_actual_labels = [actual_labels[i] for i in sorted_indices]
+def load_resnet_model(model_path):
+    checkpoint = torch.load(model_path, map_location=torch.device('cpu'))
 
-    return accuracy, precision, recall, f1, actual_labels, predicted_labels, sorted_images, sorted_actual_labels
+    class_names_path = os.path.join(os.path.dirname(model_path), 'class_names.txt')
+    with open(class_names_path, 'r') as f:
+        class_names = f.read().splitlines()
 
-def save_metrics_and_confusion_matrix(output_dir, accuracy, precision, recall, f1, actual_labels, predicted_labels, classes):
-    # Save evaluation metrics to a text file
-    with open(os.path.join(output_dir, 'evaluation_metrics.txt'), 'w') as f:
-        f.write(f'Accuracy: {accuracy}\n')
-        f.write(f'Precision: {precision}\n')
-        f.write(f'Recall: {recall}\n')
-        f.write(f'F1 Score: {f1}\n')
+    num_classes = len(class_names)
 
-    # Plot confusion matrix and save it
-    cm = confusion_matrix(actual_labels, predicted_labels)
-    plt.figure(figsize=(64, 48))
-    sns.set(font_scale=1.2)
-    sns.heatmap(cm, annot=True, fmt='g', cmap='Blues', xticklabels=classes, yticklabels=classes)
-    plt.xlabel('Predicted labels')
-    plt.ylabel('True labels')
-    plt.title('Confusion Matrix')
-    plt.savefig(os.path.join(output_dir, 'confusion_matrix.png'))
-    plt.close()
+    resnet101_model = torchvision.models.resnet101(pretrained=False)
+    num_ftrs = resnet101_model.fc.in_features
+    resnet101_model.fc = torch.nn.Linear(num_ftrs, num_classes)
+    resnet101_model.load_state_dict(checkpoint['model_state_dict'])
 
-def save_sorted_images(images, labels, output_dir, input_dataset):
-    os.makedirs(output_dir, exist_ok=True)
-    for i, image_path in enumerate(images):
-        img = Image.open(image_path)
-        label = input_dataset.classes[labels[i]]
-        label_dir = os.path.join(output_dir, label)
-        os.makedirs(label_dir, exist_ok=True)
-        img_name = f"sorted_image_{i}.png"
-        img.save(os.path.join(label_dir, img_name))
+    return resnet101_model, class_names
 
 def main(data_dir, model_path, output_dir):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -77,31 +90,74 @@ def main(data_dir, model_path, output_dir):
         transforms.ToTensor()
     ])
 
-    dataset = ImageFolder(root=data_dir, transform=transform)
-    test_loader = DataLoader(dataset, batch_size=16, shuffle=False)
-
-    # Load pre-trained ResNet-101 model
-    model = torchvision.models.resnet101(pretrained=True)
-    num_ftrs = model.fc.in_features
-    num_classes=len(dataset.classes)
-    model.fc = torch.nn.Linear(num_ftrs, num_classes)
-
-    model.load_state_dict(torch.load(model_path))
+    # Load model and class names
+    model, class_names = load_resnet_model(model_path)
     model.to(device)
     model.eval()
 
-    accuracy, precision, recall, f1, actual_labels, predicted_labels, sorted_images, sorted_actual_labels = evaluate_sorting_performance(model, test_loader, device)
+    # Get subfolder names from the dataset
+    subfolder_names = sorted(os.listdir(data_dir))
 
-    print(f"Accuracy: {accuracy}")
+    # Print class names from dataset and model
+    print("Class names from dataset:")
+    print(subfolder_names)
+    print("\nClass names from model:")
+    print(class_names)
+
+    # Check if class names from the model match subfolder names in the dataset
+    if set(class_names) != set(subfolder_names):
+        print("Error: Class names from model do not match subfolder names in dataset.")
+        print("Please ensure that the classes in the model and dataset match exactly.")
+        sys.exit(1)
+
+    # Load dataset and create data loader
+    dataset = CustomImageFolder(root=data_dir, transform=transform)
+    test_loader = DataLoader(dataset, batch_size=16, shuffle=False)
+
+    # Evaluate model performance
+    actual_labels, predicted_labels = evaluate_sorting_performance(model, test_loader, device, class_names)
+
+    # Save sorted images into subfolders with their respective class names in the output directory
+    for i, (image_path, label) in enumerate(dataset.samples):
+        label_dir = os.path.join(output_dir, label)
+        os.makedirs(label_dir, exist_ok=True)
+        image = Image.open(image_path)
+        image_name = os.path.basename(image_path)
+        image.save(os.path.join(label_dir, image_name))
+
+    # Calculate evaluation metrics
+    accuracy = accuracy_score(actual_labels, predicted_labels)
+    precision = precision_score(actual_labels, predicted_labels, average='macro')
+    recall = recall_score(actual_labels, predicted_labels, average='macro')
+    f1 = f1_score(actual_labels, predicted_labels, average='macro')
+
+    # Generate confusion matrix
+    conf_matrix = confusion_matrix(actual_labels, predicted_labels, labels=class_names)
+
+    # Print evaluation metrics
+    print(f"\nAccuracy: {accuracy}")
     print(f"Precision: {precision}")
     print(f"Recall: {recall}")
     print(f"F1 Score: {f1}")
 
-    # Save evaluation metrics and confusion matrix
-    save_metrics_and_confusion_matrix(output_dir, accuracy, precision, recall, f1, actual_labels, predicted_labels, dataset.classes)
+    # Save evaluation metrics to a text file
+    with open(os.path.join(output_dir, 'evaluation_metrics.txt'), 'w') as f:
+        f.write(f"Accuracy: {accuracy}\n")
+        f.write(f"Precision: {precision}\n")
+        f.write(f"Recall: {recall}\n")
+        f.write(f"F1 Score: {f1}\n")
 
-    # Save sorted images to the output directory
-    save_sorted_images(sorted_images, sorted_actual_labels, output_dir, dataset)
+    # Save confusion matrix as an image
+    num_classes = len(class_names)
+    figsize = (max(10, num_classes * 0.5), max(8, num_classes * 0.4))
+    plt.figure(figsize=figsize)
+    sns.set(font_scale=1.2)
+    sns.heatmap(conf_matrix, annot=True, fmt='d', cmap="Blues", xticklabels=class_names, yticklabels=class_names)
+    plt.xlabel('Predicted Labels')
+    plt.ylabel('True Labels')
+    plt.title('Confusion Matrix')
+    plt.savefig(os.path.join(output_dir, 'confusion_matrix.png'), dpi=120)
+    plt.close()
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
