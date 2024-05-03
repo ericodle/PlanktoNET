@@ -110,7 +110,7 @@ Start by entering your configured environment (see above steps) and running:
 ```sh
 python3 ./run_planktonet.py
 ```
-
+Note: It is best to keep the terminal window in view as you click through the GUI so you can monitor events in real time.
 #### Sort with New Model ####
 
 This utility allows users to perform plankton image sorting using state-of-the-art neural network models. Users have the option to choose between Convolutional Neural Networks (CNNs) and Transformer Neural Networks. By selecting this option, users can specify input images, choose an appropriate model, and designate an output directory for the sorted images. This functionality is ideal for users who want to classify plankton images using newly trained models.
