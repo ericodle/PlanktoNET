@@ -132,7 +132,7 @@ class resnetWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("resnet Window")
         self.setGeometry(100, 100, 800, 600)
-        self.model_file = "./models/pretrained_models/ResNet/model.pth"
+        self.model_file = "./models/pretrained_models/Convolutional/model.pth"
         self.initUI()
 
     def initUI(self):
@@ -196,6 +196,7 @@ class resnetWindow(QMainWindow):
 
             # Call resnet_sort.main() with selected arguments
             resnet_sort.main(self.input_directory, self.model_file, self.output_directory)
+            QMessageBox.information(self, "Status Report", "Sorting Complete.", QMessageBox.Ok)
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
@@ -211,7 +212,7 @@ class vitWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Transformer Window")
         self.setGeometry(100, 100, 800, 600)  # Initial window size
-        self.model_path = "models/pretrained_models/ViT/model.pth"
+        self.model_path = "models/pretrained_models/Transformer/model.pth"
         self.initUI()
 
     def initUI(self):
@@ -275,6 +276,7 @@ class vitWindow(QMainWindow):
 
             # Call vit_sort.main() with selected arguments
             vit_sort.main(self.input_directory, self.model_path, self.output_directory)
+            QMessageBox.information(self, "Status Report", "Sorting Complete.", QMessageBox.Ok)
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
@@ -304,14 +306,30 @@ class EvaluationWindow(QMainWindow):
         scroll_area.setWidget(widget)
         self.setCentralWidget(scroll_area)
 
-        self.evaluation_label = QLabel("<h2>Evaluation</h2>"
-                                       "<p>Choose the model type you want to evaluate:</p>")
+        self.evaluation_label = QLabel("<h2>Model Evaluation</h2>"
+                                         "<p><i>Evaluation involves measuring how well a model performs its intended task by comparing the model's predictions to known ground truth labels.</i>" "<p><b>Choose Model Type:</b> Convolutional or Transformer." "<p><b>Select Evaluation Dataset:</b> Choose a set of sorted images to be used as ground truths during evaluation." "<p><b>Select Model File:</b> Choose the model you wish to evaluate." "<p><b>Select Output Directory:</b> Choose where to save the evaluation results." "<p><b>Evaluate:</b> Click this button to begin!")
+
         layout.addWidget(self.evaluation_label)
 
         # Button to choose model type
         self.chooseModelTypeButton = QPushButton("Choose Model Type")
         self.chooseModelTypeButton.clicked.connect(self.chooseModelType)
         layout.addWidget(self.chooseModelTypeButton)
+
+        # Button to select evaluation dataset
+        self.selectDatasetButton = QPushButton("Select Evaluation Dataset")
+        self.selectDatasetButton.clicked.connect(self.selectEvaluationDataset)
+        layout.addWidget(self.selectDatasetButton)
+
+        # Button to select model path
+        self.selectModelButton = QPushButton("Select Model File")
+        self.selectModelButton.clicked.connect(self.selectModelPath)
+        layout.addWidget(self.selectModelButton)
+
+        # Button to select output directory
+        self.selectOutputButton = QPushButton("Select Output Directory")
+        self.selectOutputButton.clicked.connect(self.selectOutputDirectory)
+        layout.addWidget(self.selectOutputButton)
 
         # Buttons for starting evaluation
         self.evaluateButton = QPushButton("Evaluate")
@@ -327,13 +345,25 @@ class EvaluationWindow(QMainWindow):
 
         # Attributes to store user selections
         self.model_type = None
+        self.evaluation_dataset_path = None
+        self.model_path = None
+        self.output_directory = None
+
+    def selectModelPath(self):
+        self.model_path, _ = QFileDialog.getOpenFileName(self, "Select Model File", filter="Model files (*.pth)")
+
+    def selectOutputDirectory(self):
+        self.output_directory = QFileDialog.getExistingDirectory(self, "Select Output Directory")
 
     def chooseModelType(self):
-        items = ("Convolutional", "vit")
+        items = ("Convolutional", "Transformer")
         item, ok = QInputDialog.getItem(self, "Choose Model Type", "Select model type:", items, 0, False)
         if ok and item:
             self.model_type = item.lower()
             QMessageBox.information(self, "Model Type Selected", f"Model type selected: {item}")
+
+    def selectEvaluationDataset(self):
+        self.evaluation_dataset_path = QFileDialog.getExistingDirectory(self, "Select Evaluation Dataset Directory")
 
     def startEvaluation(self):
         try:
@@ -342,32 +372,30 @@ class EvaluationWindow(QMainWindow):
                 QMessageBox.warning(self, "Model Type Not Selected", "Please choose a model type.")
                 return
 
-            # Prompt user to select data directory
-            data_dir = QFileDialog.getExistingDirectory(self, "Select Data Directory")
-            if not data_dir:
-                QMessageBox.warning(self, "Data Directory Not Selected", "Please select the data directory.")
+            # Check if evaluation dataset directory is selected
+            if not self.evaluation_dataset_path:
+                QMessageBox.warning(self, "Evaluation Dataset Not Selected", "Please select the evaluation dataset directory.")
                 return
 
-            # Prompt user to select model file
-            model_path, _ = QFileDialog.getOpenFileName(self, "Select Model File", filter="Model files (*.pth)")
-            if not model_path:
-                QMessageBox.warning(self, "Model File Not Selected", "Please select the model file.")
-                return
-
-            # Prompt user to select output directory
-            output_dir = QFileDialog.getExistingDirectory(self, "Select Output Directory")
-            if not output_dir:
+            # Check if output directory is selected
+            if not self.output_directory:
                 QMessageBox.warning(self, "Output Directory Not Selected", "Please select the output directory.")
+                return
+
+            # Check if model file is selected
+            if not self.model_path:
+                QMessageBox.warning(self, "Model File Not Selected", "Please select the model file.")
                 return
 
             if self.model_type == "convolutional":
                 # Call resnet_eval.main() with selected arguments
-                resnet_eval.main(data_dir, model_path, output_dir)
-                QMessageBox.information(self, "Evaluation Completed", "Convolutional model evaluation completed.")
-            elif self.model_type == "vit":
+                resnet_eval.main(self.evaluation_dataset_path, self.model_path, self.output_directory)
+                QMessageBox.information(self, "Status Report", "Evaluation Complete.", QMessageBox.Ok)
+
+            elif self.model_type == "transformer":
                 # Call vit_eval.main() with selected arguments
-                vit_eval.main(data_dir, model_path, output_dir)
-                QMessageBox.information(self, "Evaluation Completed", "vit model evaluation completed.")
+                vit_eval.main(self.evaluation_dataset_path, self.model_path, self.output_directory)
+                QMessageBox.information(self, "Status Report", "Evaluation Complete.", QMessageBox.Ok)
 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
@@ -398,8 +426,9 @@ class ExistingModelWindow(QMainWindow):
         scroll_area.setWidget(widget)
         self.setCentralWidget(scroll_area)
 
-        self.existing_label = QLabel("Select an existing model file that you have been working on."
-                                  "This allows you to reuse trained models for sorting plankton images.")
+        self.existing_label = QLabel("<h2>Sort with Existing Model</h2>"
+                                         "<p><i>This module is designed to sort images from a specified directory into subfolders based on the predictions made by a pre-trained model.</i>" "<p><b>Choose Model Type:</b> Convolutional or Transformer." "<p><b>Select Input Images:</b> Choose a folder containing the images you wish to sort." "<p><b>Select Model File:</b> Choose the model you wish to evaluate." "<p><b>Select Output Directory:</b> Choose where to save the evaluation results." "<p><b>Start Sorting:</b> Click this button to begin!")
+
         self.existing_label.setWordWrap(True) 
         layout.addWidget(self.existing_label)
 
@@ -409,7 +438,7 @@ class ExistingModelWindow(QMainWindow):
         layout.addWidget(self.chooseModelTypeButton)
 
         # Buttons for selecting arguments
-        self.selectInputButton = QPushButton("Select Input Directory")
+        self.selectInputButton = QPushButton("Select Input Images")
         self.selectInputButton.clicked.connect(self.selectInputDirectory)
         layout.addWidget(self.selectInputButton)
 
@@ -441,7 +470,7 @@ class ExistingModelWindow(QMainWindow):
             QMessageBox.information(self, "Input Directory Selected", f"Input directory selected: {input_directory}")
 
     def chooseModelType(self):
-        items = ("Convolutional", "vit")
+        items = ("Convolutional", "Transformer")
         item, ok = QInputDialog.getItem(self, "Choose Model Type", "Select model type:", items, 0, False)
         if ok and item:
             self.model_type = item.lower()
@@ -471,9 +500,12 @@ class ExistingModelWindow(QMainWindow):
             if self.model_type == "convolutional":
                 # Call resnet_sort.main() with selected arguments
                 resnet_sort.main(self.input_directory, self.model_file, self.output_directory)
-            elif self.model_type == "vit":
+                QMessageBox.information(self, "Status Report", "Sorting Complete.", QMessageBox.Ok)
+
+            elif self.model_type == "transformer":
                 # Call vit_sort.main() with selected arguments
                 vit_sort.main(self.input_directory, self.model_file, self.output_directory)
+                QMessageBox.information(self, "Status Report", "Sorting Complete.", QMessageBox.Ok)
                 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
@@ -597,10 +629,12 @@ class FineTuneWindow(QMainWindow):
             if self.model_type == "convolutional":
                 # Call resnet_finetune.main() with selected arguments
                 resnet_finetune.main(self.input_directory, self.output_directory, self.model_file, self.lr, self.num_imgs)
+                QMessageBox.information(self, "Status Report", "Fine-tuning Complete.", QMessageBox.Ok)
 
             if self.model_type == "transformer":
                 # Call vit_sort.main() with selected arguments
                 vit_finetune.main(self.input_directory, self.output_directory, self.model_file, self.lr, self.num_imgs)
+                QMessageBox.information(self, "Status Report", "Fine-tuning Complete.", QMessageBox.Ok)
                 
         except Exception as e:
             QMessageBox.critical(self, "Error", f"An error occurred: {str(e)}")
