@@ -20,7 +20,7 @@
     <br />
   </p>
 
-  <p align="center">
+  <p align="left">
   <img src="https://github.com/ericodle/PlanktoNET/blob/main/img/workflow_diagram.png" alt="Logo" width="700" height="900">
     <br />
   </p>
