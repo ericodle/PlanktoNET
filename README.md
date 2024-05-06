@@ -20,13 +20,13 @@
     <br />
   </p>
 
-  <p align="left">
+  <p align="center">
   <img src="https://github.com/ericodle/PlanktoNET/blob/main/img/workflow_diagram.png" alt="Logo" width="700" height="900">
     <br />
   </p>
   
   Experiment Breakdown:
-  
+   <p align="left">
   1. Develop a predictive image sorting model utilizing data from McLane Labs.
   2. Evaluate model performance on IFCB and PlanktoScope imaging technologies.
   3. Implement a finetuning feature to allow users to incorporate additional data into their unique image databases.
