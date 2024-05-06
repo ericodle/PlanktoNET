@@ -30,7 +30,7 @@
     1. Develop a predictive image sorting model utilizing data from McLane Labs.
     2. Evaluate model performance on IFCB and PlanktoScope imaging technologies.
     3. Implement a finetuning feature to allow users to incorporate additional data into their unique image databases.
- </p>
+ 
 ## Prerequisite
 
 Install [Python3](https://www.python.org/downloads/) on your computer.
