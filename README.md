@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/github_username/repo_name">
-    <img src="https://github.com/ericodle/PlanktoNET/blob/main/img/planktonet_logo.png" alt="Logo" width="300" height="300">
+    <img src="img/planktonet_logo.png" width="350" title="logo">
   </a>
 
 <h3 align="center">PlanktoNET: Automated identification of planktonic biodiversity *Research Ongoing* </h3>
