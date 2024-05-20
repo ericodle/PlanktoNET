@@ -1,0 +1,27 @@
+PlanktoNET/
+├── README.md
+├── requirements.txt
+├── setup.py
+├── .gitignore
+├── img/
+│   ├── IFCB_sample_img.png
+│   ├── planktonet_logo.png
+│   └── workflow_diagram.png
+├── src/
+│   ├── extract_testset.py
+│   ├── image_preprocess.py
+│   ├── resnet_double_train.py
+│   ├── resnet_eval.py
+│   ├── resnet_finetune.py
+│   ├── resnet_single_train.py
+│   ├── resnet_sort.py
+│   ├── run_planktonet.py
+│   ├── vit_double_train.py
+│   ├── vit_eval.py
+│   ├── vit_finetune.py
+│   ├── vit_single_train.py
+│   └── vit_sort.py
+├── tests/
+│   └── test_main.py
+└── .vscode/
+    └── settings.json

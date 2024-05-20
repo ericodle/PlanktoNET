@@ -1,0 +1,38 @@
+experimentation workflow:
+
+      1) Pilot experiments were performed with various architectures to hone in on optimal training parameters
+             (training results output: "pilot_experiments" folder)
+
+                                  |                                                           
+                                  V                                                                
+ 
+       2) Trained ResNet and ViT models on McLaneLabs_set
+             (training results output: "train_testing" folder > "mclanelabs_set_training")
+
+                                  |
+                                  V
+
+        3) Trained ResNet and ViT models separately on OIST_set
+             (training results output: "train_testing" folder > "OIST_set_training")
+
+                                  |
+                                  V
+
+        4) Trained ResNet and ViT models on both sets using double_train (finetune) scripts
+            (training results output: "train_testing" folder > "combined_set_training")
+
+                                  |
+                                  V
+
+        5) Evaluated models on 100 randomly selected images from each class (or however many exist)
+           Included ROC/AUC analysis
+           Evaluation image sets are stored in image_sets>eval_sets (used image_preprocess.py and extract_testset.py to generate)
+            (evaluation results output: "eval_testing" folder)
+
+                                  |
+                                  V
+
+        6) OIST_Unknown_preproceessed set used as real-world test of model performance
+           sort.py scripts used to execute sort with the trained models.
+           Included confidence calculation
+            (sort results output: "sort_testing" folder)
