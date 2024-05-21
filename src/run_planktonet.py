@@ -20,7 +20,7 @@ class StartWindow(QWidget):
 
         # Add a cute image
         image_label = QLabel(alignment=Qt.AlignCenter) 
-        pixmap = QPixmap("./img/D20230307T053258_IFCB108_02078.png")
+        pixmap = QPixmap("./img/planktonet_logo.png")
         pixmap = pixmap.scaledToWidth(400)  # Adjust the width as needed
         image_label.setPixmap(pixmap)
         layout.addWidget(image_label)
