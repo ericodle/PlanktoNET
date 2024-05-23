@@ -226,4 +226,3 @@ if __name__ == "__main__":
     model_path = sys.argv[2]
     output_dir = sys.argv[3]
     main(data_dir, model_path, output_dir)
-
