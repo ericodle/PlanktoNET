@@ -40,72 +40,56 @@ If the first number is not a 3, update to Python3.
 
 ## Setup
 
-Here is an easy way to use our GitHub repository.
+Currently, this is the easest way to run the project.
 
-### Step 1: Clone the repository
+### Step 1: Download the repository
 
+Download it to your computer. 
 
-Open the command line interface and run:
-  ```sh
-  git clone https://github.com/ericodle/PlanktoNET.git
-  ```
+### Step 2: Unpack and change directory to the repository
 
-You have now downloaded the entire project, including all its sub-directories (folders) and files.
-(We will avoid using Git commands.)
-
-### Step 2: Navigate to the project directory
-Find where your computer saved the project, then enter:
+Find where your computer saved the project. 
+Unzip/unpack/decompress it, then enter:
 
   ```sh
   cd /path/to/project/directory
   ```
 
-If performed correctly, your command line interface should resemble
-
-```
-user@user:~/PlanktoNET$
-```
+This is now the working directory.
 
 ### Step 3: Create a virtual environment: 
-Use a **virtual environment** so library versions on your computer match the versions used during development and testing.
+The default size limit on PyPI is 60MB.
+Therefore, we will have to take the **virtual environment** route.
+
+Create a virtual environment called *env* inside the working directory.
+
+```sh
+python3 -m venv env
+```
+
+Then, activate the virtual environment.
 
 
 ```sh
-python3 -m venv -p python3.8 planktonet-env
+source env/bin/activate
 ```
 
-A virtual environment named "planktonet-env" has been created. 
-Enter the environment to do our work by using the following command:
-
-
-```sh
-source planktonet-env/bin/activate
-```
-
-When performed correctly, your command line interface prompt should look like 
-
-```
-(planktonet-env) user@user:~/PlanktoNET$
-```
-
-### Step 3: Install requirements.txt
+### Step 4: Install requirements.txt
 
 Avoid "dependency hell" by installing specific software versions known to work well together.
 
   ```sh
-pip install -r requirements.txt
+pip3 install -r requirements.txt
   ```
 
-### Step 4: Running PlanktoNET
+### Step 4: Run PlanktoNET
 
-PlanktoNet is an application designed for sorting plankton images efficiently using advanced neural network models. With an intuitive user interface, PlanktoNet offers various features to streamline the process of sorting plankton images, providing users with the flexibility to use pre-trained models, fine-tune existing models, and evaluate model performance.
-
-Start by entering your configured environment (see above steps) and running: 
+From inside the working directory, with virtual environment active and dependencies installed, run:
 
 ```sh
-python3 ./run_planktonet.py
+python3 -m planktonet.run_planktonet
 ```
-Note: It is best to keep the terminal window in view as you click through the GUI so you can monitor events in real time.
+
 #### Sort with New Model ####
 
 This utility allows users to perform plankton image sorting using state-of-the-art neural network models. Users have the option to choose between Convolutional Neural Networks (CNNs) and Transformer Neural Networks. By selecting this option, users can specify input images, choose an appropriate model, and designate an output directory for the sorted images. This functionality is ideal for users who want to classify plankton images using newly trained models.
@@ -114,7 +98,7 @@ This utility allows users to perform plankton image sorting using state-of-the-a
 
 This utility enables users to utilize previously trained models for sorting plankton images. Users can select an existing model file and provide input images to initiate the sorting process. This feature is beneficial for users who have already trained models on specific datasets and wish to apply them to new plankton image sorting tasks.
 
-#### Fine-Tune a Model ####
+#### Finetune Model ####
 
 This utility allows users to refine the performance of pre-trained neural network models using their own dataset. Users can select a base model, specify training data, adjust hyperparameters such as learning rate and the number of images per class, and designate an output directory for the fine-tuned model. This feature is useful for users who want to adapt pre-trained models to better suit their specific plankton image sorting requirements.
 
