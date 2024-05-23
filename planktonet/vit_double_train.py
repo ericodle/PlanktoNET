@@ -337,4 +337,3 @@ if __name__ == "__main__":
     first_data_dir = sys.argv[4]
     second_data_dir = sys.argv[5]
     main(first_data_dir, second_data_dir, output_dir, learning_rate, num_imgs)
-
