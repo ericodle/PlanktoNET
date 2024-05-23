@@ -1,11 +1,23 @@
 import sys
+import os
 from PyQt5.QtWidgets import QApplication, QPushButton, QMainWindow, QMainWindow, QVBoxLayout, QLabel, QWidget, QFileDialog, QMessageBox, QScrollArea, QDialog, QVBoxLayout, QInputDialog
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
-from . import resnet_sort, resnet_finetune, resnet_eval, vit_sort, vit_finetune, vit_eval
+from planktonet import resnet_sort, resnet_finetune, resnet_eval, vit_sort, vit_finetune, vit_eval
 
 ################################################################################################################################
 ################################################################################################################################
+
+# Get the directory path of the current script
+current_script_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Move up to the 'planktonet_tar' directory
+base_dir = os.path.dirname(current_script_dir)
+#print(base_dir)
+
+################################################################################################################################
+################################################################################################################################
+
 
 class StartWindow(QWidget):
     def __init__(self):
@@ -20,15 +32,20 @@ class StartWindow(QWidget):
 
         # Add a cute image
         image_label = QLabel(alignment=Qt.AlignCenter) 
-        pixmap = QPixmap("./img/planktonet_logo.png")
+
+        # Adjust the path to find the image in the installed package directory
+        image_path = os.path.join(base_dir, "img", "planktonet_logo.png")
+        
+        # Load the image using QPixmap
+        pixmap = QPixmap(image_path)
         pixmap = pixmap.scaledToWidth(400)  # Adjust the width as needed
         image_label.setPixmap(pixmap)
         layout.addWidget(image_label)
 
-        release_label = QLabel("Release Information: Version 1.0")
+        release_label = QLabel("Release Information: Version 0.1")
         layout.addWidget(release_label)
 
-        authors_label = QLabel("Authors: Eric Odle and Phua")
+        authors_label = QLabel("Development: Eric Odle; Support: Phua")
         layout.addWidget(authors_label)
 
         begin_button = QPushButton("Begin")
@@ -130,7 +147,7 @@ class resnetWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("resnet Window")
         self.setGeometry(100, 100, 800, 600)
-        self.model_file = "./models/pretrained_models/Convolutional/model.bin"
+        self.model_file = os.path.join(base_dir, "models/pretrained_models/Convolutional", "model.bin")
         self.initUI()
 
     def initUI(self):
@@ -210,7 +227,7 @@ class vitWindow(QMainWindow):
         super().__init__()
         self.setWindowTitle("Transformer Window")
         self.setGeometry(100, 100, 800, 600)  # Initial window size
-        self.model_path = "models/pretrained_models/Transformer/model.bin"
+        self.model_path = os.path.join(base_dir, "models/pretrained_models/Transformer", "model.bin")
         self.initUI()
 
     def initUI(self):
