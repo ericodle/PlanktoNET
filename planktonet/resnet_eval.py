@@ -9,7 +9,6 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 import seaborn as sns
-import itertools
 
 '''
 This script evaluates ResNet101 model performance on a custom image dataset using various evaluation metrics. It loads the model, computes metrics such as accuracy, precision, recall, and F1 score, generates a confusion matrix, and plots ROC curves for each class. Images are then sorted into subfolders based on their predicted classes, and all evaluation results are saved to the specified output directory.
