@@ -58,7 +58,7 @@ def main(data_dir, output_dir, model_path, learning_rate, num_imgs):
     transform = transforms.Compose(transform_list)
 
     # Load dataset and filter out classes with no images
-    dataset = datasets.ImageFolder(root=data_dir, transform=None)
+    dataset = .ImageFolder(root=data_dir, transform=None)
     new_class_names = [class_name for class_name in dataset.classes if len(os.listdir(os.path.join(data_dir, class_name))) > 0]
 
     # Load the custom ResNet-101 model and get original class names
