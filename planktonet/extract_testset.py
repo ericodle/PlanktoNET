@@ -6,6 +6,7 @@ import sys
 '''
 This script processes a root folder containing subfolders of images, ensuring each subfolder retains only 100 randomly selected images by removing any excess. It validates inputs, iterates through subfolders, and applies selection logic using Python's os and random modules.
 '''
+
 # Select and keep only 100 random images in each subfolder
 def select_and_keep_images(folder_path):
     for subdir, _, files in os.walk(folder_path):
@@ -32,4 +33,3 @@ if __name__ == "__main__":
         folder_path = os.path.join(root_folder, folder)
         if os.path.isdir(folder_path):
             select_and_keep_images(folder_path)
-
