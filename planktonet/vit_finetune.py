@@ -357,4 +357,3 @@ if __name__ == "__main__":
     learning_rate = float(sys.argv[4])
     num_imgs = int(sys.argv[5])
     main(data_dir, output_dir, model_path, learning_rate, num_imgs)
-
