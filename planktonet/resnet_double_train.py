@@ -198,7 +198,7 @@ def main(first_data_dir, second_data_dir, output_dir, learning_rate, num_imgs):
                 loss = criterion(outputs, labels)
                 loss.backward()
                 optimizer.step()
-                running_loss += loss.item() * inputs.size(0)
+                running_loss += loss.item() * iuts.size(0)
 
                 train_step_losses.append(loss.item())  # Record train loss at each step
 
@@ -206,12 +206,12 @@ def main(first_data_dir, second_data_dir, output_dir, learning_rate, num_imgs):
                     print(f'Epoch [{epoch + 1}/{num_epochs}], Step [{batch_idx + 1}/{len(train_loader)}], Loss: {loss.item():.4f}')
 
                 # Save transformed images
-                for i in range(inputs.size(0)):
+                for i in range(iuts.size(0)):
                     class_output_dir = os.path.join(output_dir, combined_classes[i])
                     if not os.path.exists(class_output_dir):
                         os.makedirs(class_output_dir)
                     output_path = os.path.join(class_output_dir, f'image_{epoch}_{batch_idx}_{i}.jpg')
-                    torchvision.utils.save_image(inputs[i], output_path)
+                    torchvision.utils.save_image(iuts[i], output_path)
 
                 # Test every few steps
                 if batch_idx % test_interval == 0:
@@ -220,12 +220,12 @@ def main(first_data_dir, second_data_dir, output_dir, learning_rate, num_imgs):
                     correct = 0
                     total = 0
                     with torch.no_grad():
-                        for inputs, labels, _ in test_loader:
-                            inputs = inputs.to(device)
+                        for iuts, labels, _ in test_loader:
+                            iuts = iuts.to(device)
                             labels = labels.to(device)
-                            outputs = resnet101_model(inputs)
+                            outputs = resnet101_model(iuts)
                             loss = criterion(outputs, labels)
-                            test_loss += loss.item() * inputs.size(0)
+                            test_loss += loss.item() * iuts.size(0)
                             _, predicted = torch.max(outputs, 1)
                             total += labels.size(0)
                             correct += (predicted == labels).sum().item()
@@ -296,7 +296,7 @@ def main(first_data_dir, second_data_dir, output_dir, learning_rate, num_imgs):
         num_train_steps = len(train_step_losses)
         num_test_steps = len(test_step_losses)
 
-        fig, ax1 = plt.subplots(figsize=(10, 5))
+        fig, ax1 = .subplots(figsize=(10, 5))
 
         # Plotting Train Loss on the left y-axis
         ax1.plot(range(num_train_steps), train_step_losses, label='Train Loss', color='tab:blue')
@@ -320,8 +320,8 @@ def main(first_data_dir, second_data_dir, output_dir, learning_rate, num_imgs):
         lines2, labels2 = ax2.get_legend_handles_labels()
         ax2.legend(lines + lines2, labels + labels2, loc='center right')
 
-        plt.title('Training and Testing Metrics at Each Step')
-        plt.tight_layout()
+        .title('Training and Testing Metrics at Each Step')
+        .tight_layout()
 
         plt.savefig(os.path.join(output_dir, 'training_plot_steps_with_epochs.png'), dpi=600)
 
