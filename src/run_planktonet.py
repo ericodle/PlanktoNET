@@ -3,7 +3,7 @@ import os
 from PyQt5.QtWidgets import QApplication, QPushButton, QMainWindow, QMainWindow, QVBoxLayout, QLabel, QWidget, QFileDialog, QMessageBox, QScrollArea, QDialog, QVBoxLayout, QInputDialog
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
-from planktonet import resnet_sort, resnet_finetune, resnet_eval, vit_sort, vit_finetune, vit_eval
+import resnet_sort, resnet_finetune, resnet_eval, vit_sort, vit_finetune, vit_eval
 
 ################################################################################################################################
 ################################################################################################################################
