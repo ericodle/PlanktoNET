@@ -6,7 +6,6 @@ PlanktoNET/
 │   ├── planktonet_logo.png
 │   └── workflow_diagram.png
 ├── planktonet/
-│   ├── __init__.py
 │   ├── extract_testset.py
 │   ├── image_preprocess.py
 │   ├── resnet_double_train.py
@@ -20,12 +19,5 @@ PlanktoNET/
 │   ├── vit_finetune.py
 │   ├── vit_single_train.py
 │   └── vit_sort.py
-├── models/pretrained_models/
-│   ├── Convolutional/
-│       ├── class_names.txt
-│       └── model.bin
-│   ├── Transformer/
-│       ├── class_names.txt
-│       └── model.bin
 │
 └── development_notes.txt
