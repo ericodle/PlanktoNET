@@ -3,8 +3,9 @@ import sys
 import torch
 import numpy as np
 from PIL import Image
+from scipy.stats import ks_2samp
 import torchvision
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, roc_auc_score, roc_curve
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
@@ -84,55 +85,53 @@ def load_resnet_model(model_path):
 
     return resnet101_model, class_names
 
-def plot_roc_curve(fpr, tpr, auc, class_names, output_dir, strategy):
-    plt.figure(figsize=(8, 6))
-    for i in range(len(class_names)):
-        plt.plot(fpr[i], tpr[i], label=f'{class_names[i]} (AUC = {auc[i]:.2f})')
-    plt.plot([0, 1], [0, 1], linestyle='--', color='black')
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title(f'ROC Curve ({strategy})')
-    plt.legend(loc='lower right')
-    plt.savefig(os.path.join(output_dir, f'roc_curve_{strategy}.png'))
-    plt.close()
-
-def evaluate_roc(model, test_loader, device, class_names, output_dir):
-    all_actual_labels = []
-    all_predicted_probs = []
-
+def calculate_ks_statistics(model, test_loader, device):
     model.eval()
+    all_preds = []
+    all_labels = []
     with torch.no_grad():
         for inputs, labels in test_loader:
             inputs = inputs.to(device)
+            labels = labels.to(device)
             outputs = model(inputs)
-            _, predicted = torch.max(outputs, 1)
-            predicted_probs = torch.softmax(outputs, dim=1)
-            all_actual_labels.extend(labels.cpu().numpy())
-            all_predicted_probs.extend(predicted_probs.cpu().numpy())
+            probs = torch.nn.functional.softmax(outputs, dim=1)
+            all_preds.append(probs.cpu().numpy())
+            all_labels.append(labels.cpu().numpy())
 
-    all_actual_labels = np.array(all_actual_labels)
-    all_predicted_probs = np.array(all_predicted_probs)
+    all_preds = np.concatenate(all_preds)
+    all_labels = np.concatenate(all_labels)
 
-    # Initialize dictionaries to store FPR, TPR, and AUC for each class
-    fpr_class = dict()
-    tpr_class = dict()
-    roc_auc_class = dict()
+    ks_values = {}
+    for i, class_name in enumerate(test_loader.dataset.idx_to_class.values()):
+        # True labels for the current class
+        true_labels = (all_labels == i).astype(int)
+        # Predicted probabilities for the current class
+        pred_probs = all_preds[:, i]
 
-    # Calculate ROC curve and AUC for each class
-    for i in range(len(class_names)):
-        fpr_class[i], tpr_class[i], _ = roc_curve(all_actual_labels == i, all_predicted_probs[:, i])
-        roc_auc_class[i] = roc_auc_score(all_actual_labels == i, all_predicted_probs[:, i])
+        # KS statistic
+        ks_stat, _ = ks_2samp(true_labels, pred_probs)
+        ks_values[class_name] = ks_stat
 
-        # Plot ROC curve for each class
-        plt.figure(figsize=(8, 6))
-        plt.plot(fpr_class[i], tpr_class[i], label=f'{class_names[i]} (AUC = {roc_auc_class[i]:.2f})')
-        plt.plot([0, 1], [0, 1], linestyle='--', color='black')
-        plt.xlabel('False Positive Rate')
-        plt.ylabel('True Positive Rate')
-        plt.title(f'ROC Curve ({class_names[i]})')
-        plt.legend(loc='lower right')
-        plt.savefig(os.path.join(output_dir, f'roc_curve_{class_names[i]}.png'))
-        plt.close()
+    return ks_values
+
+def plot_ks_statistics(ks_values, output_dir):
+    num_classes = len(ks_values)
+    width = (num_classes)  # Dynamic width based on number of classes
+    height = 12
+
+    plt.figure(figsize=(width, height))
+    class_names = list(ks_values.keys())
+    ks_stats = list(ks_values.values())
+
+    plt.bar(class_names, ks_stats, color='skyblue')
+    plt.xlabel('Class', fontsize=20)
+    plt.ylabel('KS Statistic', fontsize=20)
+    plt.title('KS Statistic for Each Class', fontsize=16)
+    plt.xticks(rotation=90, fontsize=12)
+    plt.yticks(fontsize=12)
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, 'ks_statistics.png'), dpi=120)  # Higher DPI for better quality
+    plt.close()
 
 def main(data_dir, model_path, output_dir):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -205,11 +204,12 @@ def main(data_dir, model_path, output_dir):
     plt.xlabel('Predicted Labels')
     plt.ylabel('True Labels')
     plt.title('Confusion Matrix')
-    plt.savefig(os.path.join(output_dir, 'confusion_matrix.png'), dpi=120)
+    plt.savefig(os.path.join(output_dir, 'confusion_matrix.png'), dpi=600)
     plt.close()
 
-    # Evaluate ROC and AUC
-    evaluate_roc(model, test_loader, device, class_names, output_dir)
+    # Calculate and plot KS statistics
+    ks_values = calculate_ks_statistics(model, test_loader, device)
+    plot_ks_statistics(ks_values, output_dir)
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
