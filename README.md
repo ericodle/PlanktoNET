@@ -114,11 +114,6 @@ Distributed under the GNU Lesser General Public License. See `LICENSE.txt` for m
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-Citing
-------
-
-Please cite the future paper, coming soon!
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
