@@ -41,6 +41,8 @@ If the first number is not a 3, update to Python3.
 ## Setup
 
 Currently, this is the easest way to run the project.
+Video tutorial: https://youtu.be/ybTw6Wb1U5M
+
 
 ### Step 1: Download the repository
 
@@ -96,7 +98,13 @@ This utility allows users to perform plankton image sorting using state-of-the-a
 
 #### Sort with Existing Model ####
 
-This utility enables users to utilize previously trained models for sorting plankton images. Users can select an existing model file and provide input images to initiate the sorting process. This feature is beneficial for users who have already trained models on specific datasets and wish to apply them to new plankton image sorting tasks.
+This utility enables users to utilize previously trained models for sorting plankton images. Users can select an existing model file and provide input images to initiate the sorting process. This feature is beneficial for users who have already trained models on specific datasets and wish to apply them to new plankton image sorting tasks. Contact us for the pre-trained models currently available:
+
+1. Annotated Plankton Images from McLane 2006 to 2010 (https://hdl.handle.net/10.1575/1912/7341, DOI: 10.1575/1912/7341) 
+
+2. Annotated Plankton Images from obtained from Okinawa, Japan 2022 to 2024.
+3. Combined annotated images
+
 
 #### Finetune Model ####
 
