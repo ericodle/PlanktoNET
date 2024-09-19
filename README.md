@@ -117,7 +117,7 @@ This utility provides users with the capability to assess the performance of tra
 <!-- LICENSE -->
 ## License
 
-Distributed under the GNU Lesser General Public License. See `LICENSE.txt` for more information.
+Distributed under the MIT License.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
