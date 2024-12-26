@@ -89,7 +89,7 @@ pip3 install -r requirements.txt
 From inside the working directory, with virtual environment active and dependencies installed, run:
 
 ```sh
-python3 -m planktonet.run_planktonet
+python3 /home/eo/PlanktoNET-main/src/run_planktonet.py
 ```
 
 #### Sort with New Model ####
