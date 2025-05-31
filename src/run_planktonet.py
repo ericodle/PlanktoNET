@@ -45,7 +45,7 @@ class StartWindow(QWidget):
         release_label = QLabel("Release Information: Version 0.1")
         layout.addWidget(release_label)
 
-        authors_label = QLabel("Development: Eric Odle; Support: Phua")
+        authors_label = QLabel("Development: Eric Odle")
         layout.addWidget(authors_label)
 
         begin_button = QPushButton("Begin")
